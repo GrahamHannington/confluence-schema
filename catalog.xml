@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="public">
+<public publicId="-//Atlassian//Confluence 4 Page//EN" uri="confluence.dtd"/>
+<uri name="http://www.atlassian.com/schema/confluence/4/ac/" uri="confluence.xsd"/>
+<uri name="http://www.atlassian.com/schema/confluence/4/ri/" uri="confluence-ri.xsd"/>
+<uri name="http://www.atlassian.com/schema/confluence/4/" uri="confluence-xhtml.xsd"/>
+<uri name="http://www.w3.org/XML/1998/namespace" uri="xml.xsd"/>
+</catalog>

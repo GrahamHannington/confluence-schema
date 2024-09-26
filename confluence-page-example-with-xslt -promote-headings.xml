@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="promote-headings.xsl"?>
+<!DOCTYPE ac:confluence SYSTEM "confluence.dtd">
+<ac:confluence xmlns:ac="http://www.atlassian.com/schema/confluence/4/ac/" xmlns:ri="http://www.atlassian.com/schema/confluence/4/ri/" xmlns="http://www.atlassian.com/schema/confluence/4/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.atlassian.com/schema/confluence/4/ac/ confluence.xsd">
+<h1>Heading 1</h1>
+<p>Paragraph of text.</p>
+<h2>Heading 2</h2>
+<p>Paragraph of text.</p>
+<h3>Heading 3</h3>
+<p>Paragraph of text.</p>
+<h4>Heading 4</h4>
+<p>Paragraph of text.</p>
+<h5>Heading 5</h5>
+<p>Paragraph of text.</p>
+<p>
+  <ac:image ac:border="true" ac:height="35" ac:width="155">
+    <ri:url ri:value="http://www.atlassian.com/dms/wac/images/logoAtlassian.png"/>
+  </ac:image>
+</p>
+<h6>Heading 6</h6>
+<p>Paragraph of text.</p>
+</ac:confluence>

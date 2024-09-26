@@ -1,0 +1,367 @@
+<!--
+Confluence page XML DTD.
+
+Last updated 2012-05-04.
+
+Based on the XHTML 1.0 Strict DTD (xhtml1-strict.dtd),
+trimmed and extended to match the Confluence storage format.
+
+Developed by Graham Hannington <graham_hannington@fundi.com.au>
+(Confluence user; no other affiliation with Atlassian).
+
+Copyright (c) 2012, Fundi Software.
+All rights reserved.
+
+Distributed under the BSD 2-Clause license.
+-->
+
+<!-- Character mnemonic entities -->
+
+<!ENTITY % HTMLlat1 PUBLIC
+   "-//W3C//ENTITIES Latin 1 for XHTML//EN"
+   "xhtml-lat1.ent">
+%HTMLlat1;
+
+<!ENTITY % HTMLsymbol PUBLIC
+   "-//W3C//ENTITIES Symbols for XHTML//EN"
+   "xhtml-symbol.ent">
+%HTMLsymbol;
+
+<!ENTITY % HTMLspecial PUBLIC
+   "-//W3C//ENTITIES Special for XHTML//EN"
+   "xhtml-special.ent">
+%HTMLspecial;
+
+<!-- Imported names -->
+
+<!-- A single character, as per section 2.2 of [XML] -->
+<!ENTITY % Character "CDATA">
+
+<!-- One or more digits -->
+<!ENTITY % Number "CDATA">
+
+<!-- A Uniform Resource Identifier, see [RFC2396] -->
+<!ENTITY % URI "CDATA">
+
+<!-- Style sheet data -->
+<!ENTITY % StyleSheet "CDATA">
+
+<!-- Used for titles etc. -->
+<!ENTITY % Text "CDATA">
+
+<!-- Generic attributes -->
+
+<!ENTITY % classattr
+ "class       CDATA          #IMPLIED"
+  >
+
+<!ENTITY % styleattr
+ "style       %StyleSheet;   #IMPLIED"
+  >
+
+<!-- Atlassian Confluence elements -->
+
+<!ENTITY % confluence.ac.block
+   "ac:macro">
+<!ENTITY % confluence.ac.inline
+   "ac:macro | ac:link | ac:emoticon | ac:image">
+<!ENTITY % confluence.ri
+   "ri:page | ri:blog-post | ri:attachment | ri:url | ri:shortcut | ri:user | ri:space | ri:content-entity">
+
+<!-- Text elements -->
+
+<!ENTITY % special.pre
+   "br | span">
+
+
+<!ENTITY % special
+   "%special.pre;">
+
+<!ENTITY % fontstyle "i | b | big | small | u | s">
+
+<!ENTITY % phrase "em | strong | code | sub | sup | cite">
+
+<!ENTITY % inline "a | %special; | %fontstyle; | %phrase;">
+
+<!-- %Inline; covers inline or "text-level" elements -->
+<!ENTITY % Inline "(#PCDATA | %inline; | del | %confluence.ac.inline;)*">
+
+<!-- Block-level elements -->
+
+<!ENTITY % heading "h1|h2|h3|h4|h5|h6">
+<!ENTITY % lists "ul | ol">
+<!ENTITY % blocktext "pre | hr | blockquote">
+
+<!ENTITY % block
+   "p | %heading; | div | %lists; | %blocktext; | table">
+
+<!ENTITY % Block "(%block; | del | %confluence.ac.block;)*">
+
+<!-- %Flow; mixes block and inline and is used for list items etc. -->
+<!ENTITY % Flow "(#PCDATA | %block; | %inline; | del | %confluence.ac.inline;)*">
+
+<!-- Content models for exclusions -->
+
+<!-- a elements use %Inline; excluding a -->
+<!ENTITY % a.content
+   "(#PCDATA | %special; | %fontstyle; | %phrase; | %confluence.ac.inline;)*">
+
+<!-- pre uses %Inline excluding big, small, sup or sup -->
+<!ENTITY % pre.content
+   "(#PCDATA | a | %fontstyle; | %phrase; | %special.pre;)*">
+
+<!-- Document structure -->
+
+<!-- Entities for namespace prefixes -->
+<!ENTITY % xmlns.xsi.prefix "xsi">
+<!ENTITY % xmlns.xsi.attrs
+   "xmlns:%xmlns.xsi.prefix; %URI; #FIXED 'http://www.w3.org/2001/XMLSchema-instance'
+    %xmlns.xsi.prefix;:schemaLocation CDATA #IMPLIED">
+
+<!-- Document root element -->
+<!ELEMENT ac:confluence %Block;>
+<!ATTLIST ac:confluence
+  xmlns           %URI;      #FIXED 'http://www.atlassian.com/schema/confluence/4/'
+  xmlns:ac        %URI;      #FIXED 'http://www.atlassian.com/schema/confluence/4/ac/'
+  xmlns:ri        %URI;      #FIXED 'http://www.atlassian.com/schema/confluence/4/ri/'
+  %xmlns.xsi.attrs;
+  >
+
+<!-- Generic language/style container -->
+<!ELEMENT div %Flow;>
+<!ATTLIST div
+  %styleattr;
+  data-atlassian-layout CDATA #IMPLIED
+  >
+
+<!-- Paragraph -->
+<!ELEMENT p %Inline;>
+<!ATTLIST p
+  %styleattr;
+  >
+
+<!--
+  Heading. There are six levels of headings from h1 (the most important)
+  to h6 (the least important).
+-->
+<!ELEMENT h1 %Inline;>
+<!ATTLIST h1
+  %styleattr;
+  >
+<!ELEMENT h2 %Inline;>
+<!ATTLIST h2
+  %styleattr;
+  >
+<!ELEMENT h3 %Inline;>
+<!ATTLIST h3
+  %styleattr;
+  >
+<!ELEMENT h4 %Inline;>
+<!ATTLIST h4
+  %styleattr;
+  >
+<!ELEMENT h5 %Inline;>
+<!ATTLIST h5
+  %styleattr;
+  >
+<!ELEMENT h6 %Inline;>
+<!ATTLIST h6
+  %styleattr;
+  >
+
+<!-- Unordered list -->
+<!ELEMENT ul (li)+>
+<!ATTLIST ul
+  %classattr;
+  %styleattr;
+  >
+
+<!-- Ordered (numbered) list -->
+<!ELEMENT ol (li)+>
+<!ATTLIST ol
+  %styleattr;
+  >
+
+<!-- List item -->
+<!ELEMENT li %Flow;>
+<!ATTLIST li
+  %styleattr;
+  >
+
+<!-- Horizontal rule -->
+<!ELEMENT hr EMPTY>
+
+<!--
+  Preformatted text.
+  Content is %Inline; excluding "img|object|big|small|sub|sup".
+-->
+<!ELEMENT pre %pre.content;>
+
+<!-- Block-like quotes -->
+<!ELEMENT blockquote %Block;>
+
+<!-- Deleted text -->
+<!ELEMENT del %Flow;>
+
+<!--
+  Anchor.
+  Content is %Inline; except that anchors shouldn't be nested.
+-->
+<!ELEMENT a %a.content;>
+<!ATTLIST a
+  %classattr;
+  follow      CDATA          #IMPLIED
+  href        %URI;          #IMPLIED
+  rel         CDATA          #IMPLIED
+  title       CDATA          #IMPLIED
+  >
+
+<!-- Generic language/style container -->
+<!ELEMENT span %Inline;> 
+<!ATTLIST span
+  %styleattr;
+  >
+
+<!-- Forced line break -->
+<!ELEMENT br EMPTY>
+<!ATTLIST br
+  %classattr;
+  >
+
+<!-- Emphasis -->
+<!ELEMENT em     %Inline;>
+<!-- Strong emphasis -->
+<!ELEMENT strong %Inline;>
+<!-- Program code -->
+<!ELEMENT code   %Inline;>
+<!-- Citation -->
+<!ELEMENT cite   %Inline;>
+<!-- Subscript -->
+<!ELEMENT sub    %Inline;>
+<!-- Superscript -->
+<!ELEMENT sup    %Inline;>
+<!-- Italic font -->
+<!ELEMENT i      %Inline;>
+<!-- Bold font -->
+<!ELEMENT b      %Inline;>
+<!-- Bigger font -->
+<!ELEMENT big    %Inline;>
+<!-- Smaller font -->
+<!ELEMENT small  %Inline;>
+<!-- Underline -->
+<!ELEMENT u      %Inline;>
+<!-- Strikethrough -->
+<!ELEMENT s      %Inline;>
+
+<!-- Table -->
+<!ELEMENT table    (tbody)>
+<!-- Table body -->
+<!ELEMENT tbody    (tr)+>
+<!-- Table row -->
+<!ELEMENT tr       (th|td)+>
+<!-- Table header cell -->
+<!ELEMENT th       %Flow;>
+<!ATTLIST th
+  %classattr;
+  rowspan     %Number;       "1"
+  colspan     %Number;       "1"
+  >
+<!-- Table data cell -->
+<!ELEMENT td       %Flow;>
+<!ATTLIST td
+  %classattr;
+  rowspan     %Number;       "1"
+  colspan     %Number;       "1"
+  >
+
+<!-- Confluence macro -->
+<!ELEMENT ac:macro (ac:parameter*,ac:default-parameter?,(ac:rich-text-body|ac:plain-text-body)?)>
+<!ATTLIST ac:macro
+  ac:name     CDATA          #REQUIRED
+  >
+<!-- Rich text body of Confluence macro -->
+<!ELEMENT ac:rich-text-body %Flow;>
+<!-- Plain text body of Confluence macro -->
+<!ELEMENT ac:plain-text-body (#PCDATA)>
+<!-- Default (unnamed) parameter of Confluence macro (a macro can have only one default parameter) -->
+<!ELEMENT ac:default-parameter (#PCDATA)>
+<!-- Named parameter of Confluence macro (a macro can have many named parameters) -->
+<!ELEMENT ac:parameter (#PCDATA)>
+<!ATTLIST ac:parameter
+  ac:name     CDATA          #REQUIRED
+  >
+<!-- Confluence image -->
+<!ELEMENT ac:image (ri:url|ri:attachment)>
+<!ATTLIST ac:image
+  ac:align    CDATA          #IMPLIED
+  ac:border   (true)         #IMPLIED
+  ac:class    CDATA          #IMPLIED
+  ac:title    CDATA          #IMPLIED
+  ac:style    %StyleSheet;   #IMPLIED
+  ac:thumbnail (true)        #IMPLIED
+  ac:alt      CDATA          #IMPLIED
+  ac:height   CDATA          #IMPLIED
+  ac:width    CDATA          #IMPLIED
+  ac:vspace   CDATA          #IMPLIED
+  ac:hspace   CDATA          #IMPLIED
+  ac:queryparams CDATA       #IMPLIED
+  >
+<!-- Confluence link -->
+<!ELEMENT ac:link ((%confluence.ri;)?,(ac:link-body|ac:plain-text-link-body)?,(%confluence.ri;)?)>
+<!ATTLIST ac:link
+  ac:anchor        CDATA     #IMPLIED
+  ac:tooltip       CDATA     #IMPLIED
+  >
+<!-- Body of Confluence link -->
+<!ELEMENT ac:link-body %Flow;>
+<!-- Plain text body of Confluence link -->
+<!ELEMENT ac:plain-text-link-body (#PCDATA)>
+<!-- Emoticon -->
+<!ELEMENT ac:emoticon EMPTY>
+<!ATTLIST ac:emoticon
+  ac:name (smile|sad|cheeky|laugh|wink|thumbs-up|thumbs-down|information|tick|cross|warning|plus|minus|question|light-on|light-off|yellow-star|red-star|green-star|blue-star) #REQUIRED
+  >
+<!-- Confluence page resource identifier -->
+<!ELEMENT ri:page EMPTY>
+<!ATTLIST ri:page
+  ri:space-key     CDATA     #IMPLIED
+  ri:content-title CDATA     #REQUIRED
+  >
+<!-- Confluence blog post resource identifier -->
+<!ELEMENT ri:blog-post EMPTY>
+<!ATTLIST ri:blog-post
+  ri:space-key     CDATA     #IMPLIED
+  ri:content-title CDATA     #IMPLIED
+  ri:posting-day   CDATA     #REQUIRED
+  >
+<!-- Confluence attachment resource identifier -->
+<!ELEMENT ri:attachment (ri:page?)>
+<!ATTLIST ri:attachment
+  ri:filename CDATA          #REQUIRED
+  >
+<!-- Confluence URL resource identifier -->
+<!ELEMENT ri:url EMPTY>
+<!ATTLIST ri:url
+  ri:value    CDATA          #REQUIRED
+  >
+<!-- Confluence shortcut resource identifier -->
+<!ELEMENT ri:shortcut EMPTY>
+<!ATTLIST ri:shortcut
+  ri:key      CDATA          #REQUIRED
+  ri:parameter CDATA         #REQUIRED
+  >
+<!-- Confluence user resource identifier -->
+<!ELEMENT ri:user EMPTY>
+<!ATTLIST ri:user
+  ri:username CDATA          #REQUIRED
+  >
+<!-- Confluence space resource identifier -->
+<!ELEMENT ri:space EMPTY>
+<!ATTLIST ri:space
+  ri:space-key CDATA         #REQUIRED
+  >
+<!-- Confluence content entity resource identifier -->
+<!ELEMENT ri:content-entity EMPTY>
+<!ATTLIST ri:content-entity
+  ri:content-id CDATA        #REQUIRED
+  >

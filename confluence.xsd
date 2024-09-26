@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="1.0" xml:lang="en"
+    xmlns="http://www.atlassian.com/schema/confluence/4/ac/"
+    xmlns:ac="http://www.atlassian.com/schema/confluence/4/ac/"
+    xmlns:acxhtml="http://www.atlassian.com/schema/confluence/4/"
+    xmlns:ri="http://www.atlassian.com/schema/confluence/4/ri/"
+    xmlns:xml="http://www.w3.org/XML/1998/namespace"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.atlassian.com/schema/confluence/4/ac/"
+    attributeFormDefault="qualified"
+    elementFormDefault="qualified">
+
+  <xs:annotation>
+    <xs:documentation>
+    Confluence page XML schema:
+    "master" schema, defining document root element (confluence)
+    and other markup in the same namespace.
+
+    Last updated 2012-05-04.
+
+    Developed by Graham Hannington (Confluence user; no other affiliation with Atlassian).
+
+    Copyright (c) 2012, Fundi Software.
+    All rights reserved.
+
+    Distributed under the BSD 2-Clause license.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:import namespace="http://www.atlassian.com/schema/confluence/4/ri/"
+      schemaLocation="confluence-ri.xsd"/>
+
+  <xs:import namespace="http://www.atlassian.com/schema/confluence/4/"
+      schemaLocation="confluence-xhtml.xsd"/>
+
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+      schemaLocation="xml.xsd"/>
+
+  <xs:group name="confluence.ac.block">
+    <xs:choice>
+      <xs:element ref="macro"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="confluence.ac.inline">
+    <xs:choice>
+      <xs:element ref="macro"/>
+      <xs:element ref="link"/>
+      <xs:element ref="emoticon"/>
+      <xs:element ref="image"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:element name="confluence" type="acxhtml:Block">
+    <xs:annotation>
+      <xs:documentation>
+      Root element of Confluence page or blog post
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="macro">
+    <xs:annotation>
+      <xs:documentation>
+      Confluence macro
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element ref="parameter" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="default-parameter" minOccurs="0" maxOccurs="1"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="rich-text-body"/>
+          <xs:element ref="plain-text-body"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="rich-text-body" type="acxhtml:Flow">
+    <xs:annotation>
+      <xs:documentation>
+      Rich text body of Confluence macro. A macro can contain only one (either rich or plain) text body.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="plain-text-body">
+    <xs:annotation>
+      <xs:documentation>
+      Plain text body of Confluence macro. A macro can contain only one (either rich or plain) text body.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute ref="xml:space" fixed="preserve"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="default-parameter">
+    <xs:annotation>
+      <xs:documentation>
+      Default (no name) parameter of Confluence macro. A macro can contain only one default parameter.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true"/>
+  </xs:element>
+
+  <xs:element name="parameter">
+    <xs:annotation>
+      <xs:documentation>
+      Named parameter of Confluence macro. A macro can contain many named parameters.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+
+  <xs:element name="image">
+    <xs:annotation>
+      <xs:documentation>
+      Image
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="ri:url"/>
+        <xs:element ref="ri:attachment"/>
+      </xs:choice>
+      <xs:attribute name="align" type="xs:string"/>
+      <xs:attribute name="border" type="xs:string" fixed="true"/>
+      <xs:attribute name="class" type="xs:string"/>
+      <xs:attribute name="title" type="xs:string"/>
+      <xs:attribute name="style" type="acxhtml:StyleSheet"/>
+      <xs:attribute name="thumbnail" type="xs:string" fixed="true"/>
+      <xs:attribute name="alt" type="xs:string"/>
+      <xs:attribute name="height" type="xs:string"/>
+      <xs:attribute name="width" type="xs:string"/>
+      <xs:attribute name="vspace" type="xs:string"/>
+      <xs:attribute name="hspace" type="xs:string"/>
+      <xs:attribute name="queryparams" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="link">
+    <xs:annotation>
+      <xs:documentation>
+      Link
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <!-- The following model is incorrect, but avoids the "content model is not determinist" error -->
+      <!-- that occurs when I try to allow for ri:confluence.ri occurring both before and after a body element (occurs in Atlassian's own source). -->
+      <!-- Curiously, the DTD allows the correct model to be specified. -->
+      <xs:sequence>
+        <xs:group ref="ri:confluence.ri" minOccurs="0"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="link-body"/>
+          <xs:element ref="plain-text-link-body"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="anchor" type="xs:string"/>
+      <xs:attribute name="tooltip" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="link-body" type="acxhtml:Flow">
+    <xs:annotation>
+      <xs:documentation>
+      Link body. A link can contain only one (either rich or plain text) body.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="plain-text-link-body">
+    <xs:annotation>
+      <xs:documentation>
+      Plain text link body. A link can contain only one (either rich or plain text) body.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true"/>
+  </xs:element>
+
+  <xs:element name="emoticon">
+    <xs:annotation>
+      <xs:documentation>
+      Emoticon
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="name" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="smile"/>
+            <xs:enumeration value="sad"/>
+            <xs:enumeration value="cheeky"/>
+            <xs:enumeration value="laugh"/>
+            <xs:enumeration value="wink"/>
+            <xs:enumeration value="thumbs-up"/>
+            <xs:enumeration value="thumbs-down"/>
+            <xs:enumeration value="information"/>
+            <xs:enumeration value="tick"/>
+            <xs:enumeration value="cross"/>
+            <xs:enumeration value="warning"/>
+            <xs:enumeration value="plus"/>
+            <xs:enumeration value="minus"/>
+            <xs:enumeration value="question"/>
+            <xs:enumeration value="light-on"/>
+            <xs:enumeration value="light-off"/>
+            <xs:enumeration value="yellow-star"/>
+            <xs:enumeration value="red-star"/>
+            <xs:enumeration value="green-star"/>
+            <xs:enumeration value="blue-star"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

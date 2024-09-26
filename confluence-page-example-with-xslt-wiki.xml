@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="wikifier/confluence2wiki.xsl"?>
+<!-- Open this file in Firefox -->
+<!DOCTYPE ac:confluence SYSTEM "confluence.dtd" [
+<!-- This DTD subset is included only for the purposes of in-browser XSLT -->
+<!-- You can remove the <?xml-stylesheet ...> line and this [...] subset -->
+<!ENTITY clubs    "&#9827;"> <!-- black club suit = shamrock,
+                                     U+2663 ISOpub -->
+]>
+<ac:confluence xmlns:ac="http://www.atlassian.com/schema/confluence/4/ac/" xmlns:ri="http://www.atlassian.com/schema/confluence/4/ri/" xmlns="http://www.atlassian.com/schema/confluence/4/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.atlassian.com/schema/confluence/4/ac/ confluence.xsd">
+<h2>Markup created using the rich text editor</h2>
+<p>Roughly in order of appearance on the Confluence rich text editor toolbar, from left to right.</p>
+<h3>Markup that uses the same names as XHTML</h3>
+<p>Paragraph</p>
+<h4>Markup: Headings</h4>
+<p>Headings are a special type of block element.</p>
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6>Heading 6</h6>
+<h4>Markup: Block elements</h4>
+<pre>Preformatted line 1<br/>
+
+Preformatted line 2<br/>
+
+Preformatted line 3</pre>
+<blockquote>
+  <p>Quote</p>
+</blockquote>
+<h4>Markup: Inline elements</h4>
+<p>
+  <strong>Bold</strong>
+</p>
+<p>
+  <em>Italic</em>
+</p>
+<p>
+  <u>Underline</u>
+</p>
+<p>C<span style="color: rgb(0,128,0);">o</span>lour</p>
+<p>
+  <s>Strike</s>through</p>
+<p>
+  <sub>Sub</sub>script</p>
+<p>
+  <sup>Super</sup>script</p>
+<p>
+  <code>Monospace</code>
+</p>
+<p>
+  <strong>Bold</strong> <em>Italic</em> <u>Underline</u> C<span style="color: rgb(0,128,0);">o</span>lour <s>Strike</s>through <sub>Sub</sub>script <sup>Super</sup>script <code>Monospace</code>
+</p>
+<h4>Markup: Lists</h4>
+<ul>
+  <li>Bullet list item</li>
+  <li>Bullet list item</li>
+</ul>
+<ol>
+  <li>Numbered list item</li>
+  <li>
+    <p>Paragraph nested in list item</p>
+    <p>Paragraph nested in list item</p>
+  </li>
+  <li>Numbered list item</li>
+</ol>
+<h4>Markup: Indent</h4>
+<p style="margin-left: 30.0px;">Paragraph (indented once)</p>
+<p style="margin-left: 60.0px;">Paragraph (indented twice)</p>
+<ol>
+  <li style="list-style-type: none;">
+    <ol>
+      <li>Numbered list item (indented once)</li>
+    </ol>
+  </li>
+</ol>
+<h5 style="margin-left: 30.0px;">Heading 5 (indented once)</h5>
+<h4>Markup: Alignment</h4>
+<p style="text-align: left;">Paragraph (align left)</p>
+<p style="text-align: center;">Paragraph (align center)</p>
+<p style="text-align: right;">Paragraph (align right)</p>
+<h5 style="text-align: center;">Heading 5 (align center)</h5>
+<ul>
+  <li style="text-align: center;">Bullet list item (align center)</li>
+</ul>
+<h4>Markup: Links to web page</h4>
+<p>
+  <a href="http://www.google.com/">Link to Google</a>
+</p>
+<h4>Markup: Tables</h4>
+<table>
+  <tbody>
+    <tr>
+      <th>Column heading 1</th>
+      <th>Column heading 2</th>
+    </tr>
+    <tr>
+      <td rowspan="2">Cell 1 Row 1 (spans two rows)</td>
+      <td class="highlight">Cell 2 Row 1 (highlighted)</td>
+    </tr>
+    <tr>
+      <td>Cell 2 Row 2</td>
+    </tr>
+    <tr>
+      <td colspan="2">Cell 1 Row 3 (spans two columns)</td>
+    </tr>
+  </tbody>
+</table>
+<h4>Markup: Symbols</h4>
+<p>Symbols: &clubs; (clubs)</p>
+<h4>Markup: Horizontal line</h4>
+<hr/>
+<h4>Markup: Line break</h4>
+<p>Line<br/>
+ break</p>
+<h3>Proprietary Confluence markup (ac:* and ri:* elements)</h3>
+<h4>Markup: Links</h4>
+<p>Link to page:</p>
+<p>
+  <ac:link>
+    <ri:page ri:content-title="Page title" ri:space-key="ID"/>
+    <ac:plain-text-link-body><![CDATA[Page title]]></ac:plain-text-link-body>
+  </ac:link>
+</p>
+<p>Link to user:</p>
+<p>
+  <ac:link>
+    <ri:user ri:username="grahan01"/>
+  </ac:link>
+</p>
+<p>Link to attachment:</p>
+<p>
+  <ac:link>
+    <ri:attachment ri:filename="test.txt"/>
+  </ac:link>
+</p>
+<p>Link to external page:</p>
+<p>
+  <a href="http://www.google.com/">http://www.google.com/</a>
+</p>
+<h4>Markup: Images</h4>
+<p>Image on web:</p>
+<p>
+  <ac:image ac:border="true" ac:height="35" ac:width="155">
+    <ri:url ri:value="http://www.atlassian.com/dms/wac/images/logoAtlassian.png"/>
+  </ac:image>
+</p>
+<p>Image attached to this page:</p>
+<p>
+  <ac:image ac:queryparams="effects=drop-shadow">
+    <ri:attachment ri:filename="logoAtlassian.png"/>
+  </ac:image>
+</p>
+<h4>Markup: Emoticons</h4>
+<p>
+  <ac:emoticon ac:name="smile"/> <ac:emoticon ac:name="sad"/> <ac:emoticon ac:name="cheeky"/> <ac:emoticon ac:name="laugh"/> <ac:emoticon ac:name="wink"/>
+</p>
+<p>
+  <ac:emoticon ac:name="thumbs-up"/> <ac:emoticon ac:name="thumbs-down"/> <ac:emoticon ac:name="information"/> <ac:emoticon ac:name="tick"/> <ac:emoticon ac:name="cross"/>
+</p>
+<p>
+  <ac:emoticon ac:name="warning"/> <ac:emoticon ac:name="plus"/> <ac:emoticon ac:name="minus"/> <ac:emoticon ac:name="question"/> <ac:emoticon ac:name="light-on"/>
+</p>
+<p>
+  <ac:emoticon ac:name="light-off"/> <ac:emoticon ac:name="yellow-star"/> <ac:emoticon ac:name="red-star"/> <ac:emoticon ac:name="green-star"/> <ac:emoticon ac:name="blue-star"/>
+</p>
+<h4>Markup: Code Block macro</h4>
+<ac:macro ac:name="code">
+  <ac:parameter ac:name="language">html/xml</ac:parameter>
+  <ac:plain-text-body><![CDATA[<xml>Content</xml>]]></ac:plain-text-body>
+</ac:macro>
+<h4>Markup: Section and Column macros</h4>
+<ac:macro ac:name="section">
+  <ac:parameter ac:name="border">true</ac:parameter>
+  <ac:rich-text-body>
+    <ac:macro ac:name="column">
+      <ac:parameter ac:name="width">50%</ac:parameter>
+      <ac:rich-text-body>
+        <p>Left column</p>
+      </ac:rich-text-body>
+    </ac:macro>
+    <ac:macro ac:name="column">
+      <ac:parameter ac:name="width">50%</ac:parameter>
+      <ac:rich-text-body>
+        <p>Right column</p>
+      </ac:rich-text-body>
+    </ac:macro>
+  </ac:rich-text-body>
+</ac:macro>
+</ac:confluence>

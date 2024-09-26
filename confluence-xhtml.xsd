@@ -1,0 +1,719 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="1.0" xml:lang="en"
+    xmlns="http://www.atlassian.com/schema/confluence/4/"
+    xmlns:ac="http://www.atlassian.com/schema/confluence/4/ac/"
+    xmlns:ri="http://www.atlassian.com/schema/confluence/4/ri/"
+    xmlns:xml="http://www.w3.org/XML/1998/namespace"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.atlassian.com/schema/confluence/4/"
+    elementFormDefault="qualified">
+
+  <xs:annotation>
+    <xs:documentation>
+    Confluence page source XML schema:
+    elements and attributes that have the same name as in XHTML 1.0 Strict,
+    with the following exceptions:
+    XHTML 1.0 Transitional s (strikethrough) and u (underline) elements;
+    proprietary data-atlassian-layout attribute on div elements.
+
+    Last updated 2012-05-04.
+
+    Developed by Graham Hannington (Confluence user; no other affiliation with Atlassian).
+
+    Copyright (c) 2012, Fundi Software.
+    All rights reserved.
+
+    Distributed under the BSD 2-Clause license.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+      schemaLocation="xml.xsd"/>
+
+  <xs:import namespace="http://www.atlassian.com/schema/confluence/4/ac/"
+      schemaLocation="confluence.xsd"/>
+
+  <xs:annotation>
+    <xs:documentation>
+    Imported names
+    </xs:documentation>
+  </xs:annotation>
+
+
+  <xs:simpleType name="Character">
+    <xs:annotation>
+      <xs:documentation>
+      A single character, as per section 2.2 of [XML]
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:length value="1" fixed="true"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Number">
+    <xs:annotation>
+      <xs:documentation>
+      One or more digits
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:pattern value="[0-9]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="URI">
+    <xs:annotation>
+      <xs:documentation>
+      A Uniform Resource Identifier, see [RFC2396]
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:anyURI"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="StyleSheet">
+    <xs:annotation>
+      <xs:documentation>
+      Style sheet data
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="Text">
+    <xs:annotation>
+      <xs:documentation>
+      Used for titles etc.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+
+  <xs:annotation>
+    <xs:documentation>
+    Generic attributes
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:attributeGroup name="style">
+    <xs:attribute name="style" type="StyleSheet">
+      <xs:annotation>
+        <xs:documentation>
+        associated style info
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:annotation>
+    <xs:documentation>
+    Text elements
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:group name="special.pre">
+    <xs:choice>
+      <xs:element ref="br"/>
+      <xs:element ref="span"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="special">
+    <xs:choice>
+      <xs:group ref="special.pre"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="fontstyle">
+    <xs:choice>
+      <xs:element ref="i"/>
+      <xs:element ref="b"/>
+      <xs:element ref="big"/>
+      <xs:element ref="small"/>
+      <xs:element ref="u"/>
+      <xs:element ref="s"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="phrase">
+    <xs:choice>
+      <xs:element ref="em"/>
+      <xs:element ref="strong"/>
+      <xs:element ref="code"/>
+      <xs:element ref="cite"/>
+      <xs:element ref="sub"/>
+      <xs:element ref="sup"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="inline">
+    <xs:choice>
+      <xs:element ref="a"/>
+      <xs:group ref="special"/>
+      <xs:group ref="fontstyle"/>
+      <xs:group ref="phrase"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:complexType name="Inline" mixed="true">
+    <xs:annotation>
+      <xs:documentation>
+      "Inline" covers inline or "text-level" elements
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:group ref="inline"/>
+      <xs:element ref="del"/>
+      <xs:group ref="ac:confluence.ac.inline"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:annotation>
+    <xs:documentation>
+    Block-level elements
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:group name="heading">
+    <xs:choice>
+      <xs:element ref="h1"/>
+      <xs:element ref="h2"/>
+      <xs:element ref="h3"/>
+      <xs:element ref="h4"/>
+      <xs:element ref="h5"/>
+      <xs:element ref="h6"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="lists">
+    <xs:choice>
+      <xs:element ref="ul"/>
+      <xs:element ref="ol"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="blocktext">
+    <xs:choice>
+      <xs:element ref="pre"/>
+      <xs:element ref="hr"/>
+      <xs:element ref="blockquote"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="block">
+    <xs:choice>
+      <xs:element ref="p"/>
+      <xs:group ref="heading"/>
+      <xs:element ref="div"/>
+      <xs:group ref="lists"/>
+      <xs:group ref="blocktext"/>
+      <xs:element ref="table"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:complexType name="Block">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:group ref="block"/>
+      <xs:element ref="del"/>
+      <xs:group ref="ac:confluence.ac.block"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="Flow" mixed="true">
+    <xs:annotation>
+      <xs:documentation>
+      "Flow" mixes block and inline and is used for list items etc.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:group ref="block"/>
+      <xs:group ref="inline"/>
+      <xs:element ref="del"/>
+      <xs:group ref="ac:confluence.ac.inline"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:annotation>
+    <xs:documentation>
+    Content models for exclusions
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:complexType name="a.content" mixed="true">
+    <xs:annotation>
+      <xs:documentation>
+      a elements use "Inline" excluding a
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:group ref="special"/>
+      <xs:group ref="fontstyle"/>
+      <xs:group ref="phrase"/>
+      <xs:element ref="del"/>
+      <xs:group ref="ac:confluence.ac.inline"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="pre.content" mixed="true">
+    <xs:annotation>
+      <xs:documentation>
+      pre uses "Inline" excluding big, small, sup or sup
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="a"/>
+      <xs:group ref="fontstyle"/>
+      <xs:group ref="phrase"/>
+      <xs:group ref="special.pre"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="div">
+    <xs:annotation>
+      <xs:documentation>
+      Generic language/style container
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="Flow">
+          <xs:attributeGroup ref="class"/>
+          <xs:attribute name="data-atlassian-layout" type="xs:string"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="p">
+    <xs:annotation>
+      <xs:documentation>
+      Paragraph
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="Inline">
+          <xs:attributeGroup ref="style"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:annotation>
+    <xs:documentation>
+    Headings:
+    There are six levels of headings from h1 (the most important)
+    to h6 (the least important).
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:element name="h1">
+    <xs:annotation>
+      <xs:documentation>
+      Heading 1
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="Inline">
+          <xs:attribute name="style" type="StyleSheet"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="h2">
+    <xs:annotation>
+      <xs:documentation>
+      Heading 2
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="Inline">
+          <xs:attribute name="style" type="StyleSheet"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="h3">
+    <xs:annotation>
+      <xs:documentation>
+      Heading 3
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="Inline">
+          <xs:attribute name="style" type="StyleSheet"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="h4">
+    <xs:annotation>
+      <xs:documentation>
+      Heading 4
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="Inline">
+          <xs:attribute name="style" type="StyleSheet"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="h5">
+    <xs:annotation>
+      <xs:documentation>
+      Heading 5
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="Inline">
+          <xs:attribute name="style" type="StyleSheet"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="h6">
+    <xs:annotation>
+      <xs:documentation>
+      Heading 6
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="Inline">
+          <xs:attribute name="style" type="StyleSheet"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:annotation>
+    <xs:documentation>
+    Lists
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:element name="ul">
+    <xs:annotation>
+      <xs:documentation>
+      Unordered (bullet) list
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+      <xs:attribute name="class" type="xs:NMTOKENS"/>
+      <xs:attribute name="style" type="StyleSheet"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ol">
+    <xs:annotation>
+      <xs:documentation>
+      Ordered (numbered) list
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+        <xs:attribute name="style" type="StyleSheet"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="li">
+    <xs:annotation>
+      <xs:documentation>
+      List item
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="Flow">
+          <xs:attribute name="style" type="StyleSheet"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="hr">
+    <xs:annotation>
+      <xs:documentation>
+      Horizontal rule
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType/>
+  </xs:element>
+
+  <xs:element name="pre">
+  <xs:annotation>
+    <xs:documentation>
+    Preformatted text
+    </xs:documentation>
+  </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="pre.content">
+           <xs:attribute ref="xml:space" fixed="preserve"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="blockquote" type="Block">
+  <xs:annotation>
+    <xs:documentation>
+    Block-like quotation
+    </xs:documentation>
+  </xs:annotation>
+  </xs:element>
+
+  <xs:element name="del" type="Flow">
+    <xs:annotation>
+      <xs:documentation>
+      Deleted Text
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="a">
+    <xs:annotation>
+      <xs:documentation>
+      Anchor:
+      Content is "Inline" except that anchors shouldn't be nested
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="a.content">
+          <xs:attribute name="class" type="xs:NMTOKENS"/>
+          <xs:attribute name="follow" type="URI"/>
+          <!-- href not necessarily strictly a URI (might contain spaces) -->
+          <xs:attribute name="href" type="Text"/>
+          <xs:attribute name="rel" type="Text"/>
+          <xs:attribute name="title" type="Text"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:annotation>
+    <xs:documentation>
+    Inline elements
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:element name="span">
+    <xs:annotation>
+      <xs:documentation>
+      Generic language/style container
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="Inline">
+          <xs:attribute name="style" type="StyleSheet"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="br">
+    <xs:annotation>
+      <xs:documentation>
+      Forced line break
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="class" type="xs:NMTOKENS"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="em" type="Inline">
+    <xs:annotation>
+      <xs:documentation>
+      Emphasis
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="strong" type="Inline">
+    <xs:annotation>
+      <xs:documentation>
+      Strong emphasis
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="code" type="Inline">
+    <xs:annotation>
+      <xs:documentation>
+      Program code
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="cite" type="Inline">
+    <xs:annotation>
+      <xs:documentation>
+      Citation. (Cannot be entered directly using the Confluence rich text editor, but you can use the wiki markup dialog to insert it. For example: ??This is a citation??
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="sub" type="Inline">
+    <xs:annotation>
+      <xs:documentation>
+      Subscript
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="sup" type="Inline">
+    <xs:annotation>
+      <xs:documentation>
+      Superscript
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="i" type="Inline">
+    <xs:annotation>
+      <xs:documentation>
+      Italic font
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="b" type="Inline">
+    <xs:annotation>
+      <xs:documentation>
+      Bold font
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="big" type="Inline">
+    <xs:annotation>
+      <xs:documentation>
+      Bigger font
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="small" type="Inline">
+    <xs:annotation>
+      <xs:documentation>
+      Smaller font
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="u" type="Inline">
+    <xs:annotation>
+      <xs:documentation>
+      Underline (from XHTML 1.0 Transitional, not Strict)
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:element name="s" type="Inline">
+    <xs:annotation>
+      <xs:documentation>
+      Strikethrough (from XHTML 1.0 Transitional, not Strict)
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+  <xs:annotation>
+    <xs:documentation>
+    Tables
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:element name="table">
+    <xs:annotation>
+      <xs:documentation>
+      Table
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="tbody"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="tbody">
+    <xs:annotation>
+      <xs:documentation>
+      Table body
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="tr"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="tr">
+    <xs:annotation>
+      <xs:documentation>
+      Table row
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="th"/>
+        <xs:element ref="td"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="th">
+    <xs:annotation>
+      <xs:documentation>
+      Table header cell
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="Flow">
+          <xs:attribute name="class" type="xs:NMTOKENS"/>
+          <xs:attribute name="rowspan" default="1" type="Number"/>
+          <xs:attribute name="colspan" default="1" type="Number"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="td">
+    <xs:annotation>
+      <xs:documentation>
+      Table data cell
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="Flow">
+          <xs:attribute name="class" type="xs:NMTOKENS"/>
+          <xs:attribute name="rowspan" default="1" type="Number"/>
+          <xs:attribute name="colspan" default="1" type="Number"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

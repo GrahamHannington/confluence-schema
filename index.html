@@ -1,0 +1,823 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<link href="images/favicon.ico" rel="shortcut icon"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>XML schema for the Confluence storage format</title>
+<style type="text/css">
+/* <![CDATA[ */
+body
+{
+  font-family: sans-serif;
+  font-size: 0.9em;
+  line-height: 1.5em;
+  margin: 0 auto 1em auto;
+  padding: 0 0 1em 0;
+  background-color: #FCFCFC;
+}
+body > *,
+div.sidebar > *,
+div.sidebar-left > *
+{
+  margin-left: 5%;
+  margin-right: 5%;
+}
+div.sidebar,
+div.sidebar-left
+{
+  margin: 0;
+}
+@media (min-width: 800px) /* If width at least 800px, outdent headings */
+{
+  body > *,
+  div.sidebar > *,
+  div.sidebar-left > *
+  {
+    margin-left: 15%;
+  }
+  body > h2,
+  div.sidebar > h2,
+  div.sidebar-left > h2,
+  body > h3
+  {
+    margin-left: 5%;
+  }
+}
+h1
+{
+  font-size: 2em;
+  line-height: 1.1em;
+  padding: 0.5em 5% 0.5em 5%;
+  margin: 0 0 1em 0;
+}
+h2
+{
+  font-size: 1.5em;
+  line-height: 1.2em;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  padding-bottom: 0.25em;
+  border-bottom: 1px solid #909090;
+}
+h3
+{
+  font-size: 1.3em;
+  line-height: 1.2em;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  padding-bottom: 0.25em;
+}
+h4
+{
+  font-size: 1.1em;
+  line-height: 1.2em;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  padding-bottom: 0.25em;
+}
+@media screen
+{
+  html
+  {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #EEEEEE; /* Fills the page */
+    position: relative; /* Fix for absolute positioning */
+  }
+  h1
+  {
+    color: #FFFFFF;
+    background-color: #909090;
+  }
+  a
+  {
+    color: #0000C0;
+  }
+}
+@media print
+{
+  h1
+  {
+  font-size: xx-large;
+  }
+  a
+  {
+    color: #000000;
+  }
+  div.button
+  {
+    display: none;
+  }
+}
+.super
+{
+  font-size: 0.75em;
+  vertical-align: super;
+}
+pre, code, kbd, samp, tt, textarea /* Fixes font size bug in Firefox and Chrome */
+{
+  font-family: monospace, monospace;
+}
+pre
+{
+  white-space: pre-wrap;
+}
+ul
+{
+  padding: 0;
+  list-style-type: square;
+}
+ol
+{
+  padding-left: 0.5em;
+  list-style-type: arabic;
+}
+ol ol
+{
+  list-style-type: lower-alpha;
+}
+ol ol ol
+{
+  list-style-type: lower-roman;
+}
+li
+{
+  margin-left: 1em;
+  padding-left: 1em;
+}
+p, ul, ol, li
+{
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+dt
+{
+  margin-top: 0.5em;
+}
+dd
+{
+  margin-left: 2em;
+}
+blockquote
+{
+  border-left: 1px solid #909090;
+  padding-left: 2em;
+}
+table
+{
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border-collapse: collapse;
+}
+table caption
+{
+  font-style: italic;
+  text-align: left;
+  padding: 0.5em;
+  margin-bottom: 0;
+}
+th
+{
+  vertical-align: bottom;
+  text-align: left;
+  background-color: #F0F0F0;
+}
+td
+{
+  vertical-align: top;
+}
+td, th
+{
+  border: 1px solid #909090;
+  padding: 0.5em;
+}
+dt
+{
+  font-weight: bold;
+}
+a
+{
+  text-decoration: none;
+}
+a:hover
+{
+  text-decoration: underline;
+}
+span.normal
+{
+  font-weight: normal;
+  font-style: normal;
+}
+span.reverse
+{
+  background-color: #000000;
+  color: #FFFFFF;
+  font-weight: bold;
+  padding: 0 0.3em 0 0.3em;
+}
+span.highlight
+{
+  background-color: #FFFF00;
+  padding: 0 0.3em 0 0.3em;
+}
+table.invisible td
+{
+  border: none;
+  padding: 0.5em 0.5em 0.5em 0;
+}
+table.nowrap-first-column td:first-child,
+table.nowrap-first-column th:first-child
+{
+  white-space: nowrap;
+}
+address
+{
+  font-style: normal;
+}
+div.frame
+{
+  padding: 0.5em 1em 0.5em 1em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border: 1px solid #909090;
+}
+ul.simple-compact
+{
+  list-style-type: none;
+}
+ul.simple-compact li
+{
+  margin: 0;
+}
+.nowrap
+{
+  white-space: nowrap;
+}
+div.button
+{
+  float: right;
+  background-color: #99C019;
+  border-radius: 10px;
+  width: 200px;
+}
+div.button a
+{
+  color: #FFFFFF;
+  transition: background-color .4s linear;
+  -moz-transition: background-color .4s linear;
+  -ms-transition: background-color .4s linear;
+  -webkit-transition: background-color .4s linear;
+}
+div.button a,
+div.button a:hover
+{
+  display: block;
+  border-radius: 10px;
+  padding: 10px;
+  line-height: 1.1em;
+}
+div.button a:hover
+{
+  background-color: #BDD930;
+  text-decoration: none;
+}
+@media screen and (min-width: 1260px) /* If width at least 1260px, show button as sidebar */
+{
+  div.button
+  {
+    position: relative;
+    float: right;
+    margin: 0 -220px 0 0;
+  }
+}
+.sidebar-only
+{
+  display: none;
+}
+@media screen and (min-width: 1260px) /* If width at least 1260px, show button as sidebar */
+{
+  .sidebar-only
+  {
+    display: block;
+  }
+  div.sidebar,
+  div.sidebar-left
+  {
+    position: relative;
+    background-color: #FCFCFC;
+    width: 200px;
+    border-radius: 10px;
+    padding: 0 0 10px;
+  }
+  div.sidebar
+  {
+    float: right;
+    margin: 0 -220px 20px 0;
+    clear: right;
+  }
+  div.sidebar-left
+  {
+    float: left;
+    margin: 0 0 20px -220px;
+    clear: left;
+  }
+  div.sidebar > *,
+  div.sidebar-left > *
+  {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  div.sidebar > h2,
+  div.sidebar-left > h2
+  {
+    font-size: 1em;
+    color: #FFFFFF;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 10px;
+    margin: 0;
+    background-color: #909090;
+  }
+}
+/* ]]> */
+</style>
+</head>
+<body>
+<h1>XML schema for the Confluence storage format</h1>
+<div class="button"><a href="https://github.com/GrahamHannington/confluence-schema">View the schema files in GitHub</a></div>
+<div class="sidebar-left">
+<h2 class="sidebar-only">Highlights</h2>
+<p>This repository helps Confluence 4 users to:</p>
+<ul>
+<li>Edit Confluence storage format content (page source XML) in a validating XML editor</li>
+<li>Validate Confluence storage format content using a validating XML parser</li>
+<li>Understand the structure of the Confluence storage format</li>
+</ul>
+</div>
+<p>This repository contains:</p>
+<ul>
+<li>An XML W3C Schema 1.0 document (XSD) for the Confluence storage format (actually, a set of XSDs: one for each namespace)</li>
+<li>An XML document type definition (DTD) for the Confluence storage format</li>
+<li>Various related sample files (including Wikifier, a web-based "Confluence XML to wiki markup" converter)</li>
+</ul>
+<div class="sidebar">
+<h2>Support</h2>
+<p>This repository is developed by Graham Hannington
+(Confluence user; no other affiliation with Atlassian). Feedback welcome.</p>
+</div>
+<div class="sidebar">
+<h2>Disclaimer</h2>
+<p>This repository was developed by a Confluence user, not by Atlassian.</p>
+<p>For background information about the development of this package,
+see the <a href="https://confluence.atlassian.com/display/DOC/Feedback+on+Confluence+Storage+Format">Feedback on Confluence Storage Format</a> page on the Atlassian Documentation website.</p>
+</div>
+<h2>Getting started</h2>
+<h3>Before you begin</h3>
+<p>You will need a validating XML editor.</p>
+<p>For example (there are many alternatives):</p>
+<ul>
+<li><a href="http://www.altova.com/xmlspy.html">Altova XMLSpy</a> (costs money)</li>
+<li><a href="http://www.jedit.org/">jEdit</a> with XML plugin (free)</li>
+</ul>
+<p>The following procedure assumes that you have extracted all of the files in this package into one directory.</p>
+<h3>Procedure</h3>
+<ol>
+<li>Open the supplied file <code>confluence-page-example.xml</code> in your XML editor.</li>
+<li>"Play" (edit the contents).
+<p>Explore the DTD/XSD-aware features of your XML editor, such as
+(depending on your particular editor):</p>
+<ul>
+<li>Selection lists of elements that can be inserted at the current cursor position</li>
+<li>Autocompletion (including automatic insertion of required elements and attributes)</li>
+<li>Online documentation (gleaned from the annotations in the schema)</li>
+</ul>
+</li>
+</ol>
+<h2>Editing XML copied from the Confluence Source Editor plugin</h2>
+<h3>About this task</h3>
+<p>The Confluence Source Editor plugin ("advanced editor") displays the source of a page as an XML <em>snippet</em>:
+a collection of XML elements, without a single root element.</p>
+<p>To edit the source as a <em>document</em> in a validating XML editor, you need to wrap the snippet in a root element.</p>
+<p>This package supplies example XML documents that use the root element name <code>ac:confluence</code>.</p>
+<h3>Before you begin</h3>
+<p>You will need:</p>
+<ul>
+<li>Confluence 4 with the Source Editor plugin ("advanced editor").</li>
+<li>A validating XML editor.</li>
+</ul>
+<h3>Procedure</h3>
+<ol>
+<li>In your XML editor, open the supplied file <code>confluence-page-template.xml</code>.</li>
+<li>In Confluence:
+<ol>
+<li>Edit a page (open a page in the rich text editor).</li>
+<li>Open the page in the source editor.</li>
+<li>Press Ctrl+A to select all of the source.</li>
+<li>Press Ctrl+C to copy the source to the Clipboard.</li></ol>
+</li>
+<li>In your XML editor:
+<ol>
+<li>Select the following comment:
+<pre>
+&lt;!-- Replace this comment with your page source --&gt;
+</pre>
+</li>
+<li>Press Ctrl+V to paste the source copied from Confluence.</li>
+<li>Edit the source.</li>
+<li>When you have finished editing, select the source <em>between</em> the <code>&lt;ac:confluence&gt;</code> start tag and the <code>&lt;/ac:confluence&gt;</code> end tag.
+Do not select <code>&lt;ac:confluence&gt;</code> or <code>&lt;/ac:confluence&gt;</code>.</li>
+<li>Copy the selected source to the Clipboard.</li>
+</ol>
+</li>
+<li>In Confluence, press Ctrl+V to paste the edited source into the Source Editor plugin, replacing the original source.</li>
+</ol>
+<h2>Editing XML accessed via WebDAV</h2>
+<p>The Confluence WebDAV plugin serves page source in the same manner as the Confluence Source Editor plugin: as an XML snippet (without a root element),
+rather than an XML document; and with the file extension <code>.txt</code>, rather than, say, <code>.xml</code>.</p>
+<p>Similar to the previous procedure for working with the Confluence Source Editor plugin, you need to wrap the snippet in a root element,
+and then unwrap it before saving it back to Confluence.</p>
+<p>I have added a comment to the Confluence Storage Format page
+<a href="http://confluence.atlassian.com/display/DOC/Confluence+Storage+Format?focusedCommentId=282174477#comment-282174477">requesting a change to the behavior of the WebDAV plugin</a>,
+so far without response from Atlassian.</p>
+<h2>Using a catalog, rather than explicitly referring to the DTD/XSD in each document instance</h2>
+<p>To validate an XML document, an XML editor needs to know where to find the DTD/XSD files.</p>
+<p>The supplied file <code>confluence-page-template.xml</code> contains explicit references to confluence.dtd and confluence.xsd:</p>
+<pre class="frame">
+&lt;!DOCTYPE ac:confluence SYSTEM "<span class="highlight">confluence.dtd</span>"&gt;
+&lt;ac:confluence ...
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.atlassian.com/schema/confluence/4/ac/ <span class="highlight">confluence.xsd</span>"&gt;
+</pre>
+<p>This technique requires the DTD/XSDs to be in the same directory as the document (.xml).
+(You can also use relative or absolute references to another directory.)</p>
+<p>However, if your XML editor supports <em>catalogs</em>, then your documents do not need to explicitly refer to the correct location of the DTD/XSDs.
+Instead, the XML editor uses a catalog to locate these files.</p>
+<p>A catalog is a file that maps:</p>
+<ul>
+<li>The formal public identifier (FPI) of a DOCTYPE to the location of the corresponding DTD</li>
+<li>A namespace URI in a schemaLocation attribute to the location of the corresponding XSD</li>
+</ul>
+<p>(This specific mapping behavior applies to files that you are accessing via a file system
+&mdash; which is typical of a document editing environment &mdash; rather than via the web.)</p>
+<p>The supplied file <code>confluence-page-template-for-catalog.xml</code> is an example of a document that you can use with a catalog.
+The schemaLocation attribute is the same as before; the only difference is the DOCTYPE, which contains an FPI followed by a system identifier:</p>
+<pre class="frame">
+&lt;!DOCTYPE ac:confluence PUBLIC "<span class="highlight">-//Atlassian//Confluence 4 Page//EN</span>" "http://www.atlassian.com/schema/confluence/4/confluence.dtd"&gt;
+</pre>
+<p>(The system identifier does not, in practice, need to point to an actual resource;
+the XML editor will, by preference, attempt to locate the DTD via the catalog, using the FPI).</p>
+<p>A catalog is supplied in the file <code>catalog.xml</code>.</p>
+<p>The method for making a catalog available to an editor depends on the particular editor.</p>
+<h3>Using a catalog with Altova XMLSpy</h3>
+<p>Edit <code>RootCatalog.xml</code> in the XMLSpy installation folder
+(for example, <code>C:\Program Files\Altova\XMLSpy2012\</code>),
+and insert the following element before
+the <code>&lt;/catalog&gt;</code> end tag:</p>
+<pre>
+&lt;nextCatalog catalog="<var>drive letter</var>:/<var>directory path to Confluence schema package</var>/catalog.xml"/&gt;
+</pre>
+<p>Restart XMLSpy.</p>
+<h3>Using a catalog with jEdit</h3>
+<p>Click Plugins &#9658; Plugin Options... &#9658; XML &#9658; Catalogs, click the + (plus sign) button, and then select the supplied <code>catalog.xml</code>.</p>
+<p>Restart jEdit.</p>
+<p><strong>Tip:</strong> In my experience, clicking &#9658; Plugins &#9658; XML &#9658; Clear Resource Cache is not always effective.</p>
+<h2>Contents of this repository</h2>
+<table class="nowrap-first-column">
+<tr>
+<th>File</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>catalog.xml</td>
+<td>OASIS XML catalog</td>
+</tr>
+<tr>
+<td>confluence.dtd</td>
+<td>Document type definition (DTD)</td>
+</tr>
+<tr>
+<td>confluence.xsd</td>
+<td>Master XSD (W3C XML 1.0 Schema document)</td>
+</tr>
+<tr>
+<td>confluence2xhtml.xsl</td>
+<td>XSLT stylesheet: transforms Confluence storage format into XHTML (more like the rich text editor display than a "preview")</td>
+</tr>
+<tr>
+<td>confluence-page-example.xml</td>
+<td>Example Confluence page source XML document</td>
+</tr>
+<tr>
+<td>confluence-page-example-with-xslt.xml</td>
+<td>Example Confluence page source XML document containing a reference to the XSLT stylesheet confluence2xhtml.xsl (tip: open this in Firefox)</td>
+</tr>
+<tr>
+<td>confluence-page-example-with-xslt-wiki.xml</td>
+<td>Example Confluence page source XML document containing a reference to the XSLT stylesheet wikifier/confluence2wiki.xsl (tip: open this in Firefox)</td>
+</tr>
+<tr>
+<td>confluence-page-template.xml</td>
+<td>Example Confluence page source XML document with empty body</td>
+</tr>
+<tr>
+<td>confluence-page-template-for-catalog.xml</td>
+<td>Example Confluence page source XML document for use with catalog (no explicit reference to local copy of DTD/XSD)</td>
+</tr>
+<tr>
+<td>confluence-ri.xsd<br/>confluence-xhtml.xsd<br/>xml.xsd</td>
+<td>Other XSD files used by the master XSD</td>
+</tr>
+<tr>
+<td>index.html</td>
+<td>The file you are reading now</td>
+</tr>
+<tr>
+<td>wikifier/*</td>
+<td>Wikifier source files</td>
+</tr>
+<tr>
+<td>xhtml1-lat1.ent<br/>xhtml1-special.ent<br/>xhtml1-symbol.ent</td>
+<td>XHTML character entity definitions (used in the Confluence DTD)</td>
+</tr>
+</table>
+<h2 id="wikifier">Wikifier: Convert Confluence XML to wiki markup</h2>
+<div class="button"><a href="wikifier/index.html">Go to the Wikifier web page</a></div>
+<p>Wikifier is a web-based test harness for the XSLT stylesheet confluence2wiki.xsl
+(supplied in the wikifier directory)
+that transforms Confluence XML into wiki markup.</p>
+<p>To convert Confluence XML to wiki markup:</p>
+<ol>
+<li>Copy Confluence XML from the Confluence Source Editor plugin to your 
+clipboard. (Or, equivalently, copy the Confluence XML contents of a .txt
+ file served by the Confluence WebDAV plugin.)</li>
+<li>Go to the Wikifier web page.
+(Or host Wikifier on your own server, using the files supplied in the wikifier directory.)
+</li>
+<li>Paste (press Ctrl+V) the Confluence XML into the text area under the "Confluence XML" heading.</li>
+</ol>
+<p>To copy the wiki markup from Wikifier to your clipboard:</p>
+<ol>
+<li>Select the text under the "Wiki markup" heading (tip: press Ctrl+A).</li>
+<li>Copy (press Ctrl+C) the selected text to your clipboard.</li>
+</ol>
+<p>Wikifier does not send your Confluence XML to a 
+server; all processing of your Confluence XML is done client-side.</p>
+<p>I have tested Wikifier in the following web browsers: IE9, and current 
+"production" versions of Chrome, Firefox, and Safari (all on Windows).</p>
+<p><strong>Tip:</strong> Instead of using Wikifier, you can paste your XML into the supplied file
+confluence-page-example-with-xslt-wiki.xml, and then open the file in Firefox to see the converted wiki markup.</p>
+<h3>What Wikifier is, and is not</h3>
+<p>Wikifier is a minimal test harness for the XSLT stylesheet I have developed
+to convert Confluence XML to wiki markup.</p>
+<p>The XSLT stylesheet is by no means complete. I welcome your feedback. If 
+Wikifier does not correctly convert some Confluence XML, please let me 
+know, and I will do what I can (no promises, though).</p>
+<p>Wikifier is <strong>not</strong> a replacement for the Confluence 3 wiki markup editor view.</p>
+<p>Wikifier is only a test harness; it is not intended to be a fully fledged 
+application. The XSLT stylesheet took me about a day and a half to 
+develop; same again for Wikifier (my cross-browser JavaScript coding 
+skills are both rudimentary and extremely rusty!).</p>
+<h3>Why I developed the XSLT stylesheet</h3>
+<p>I developed the XSLT stylesheet for the following use case: to copy 
+relatively simple content from the current version of Confluence (4) to 
+the current version of JIRA (4).</p>
+<p>I did not develop the XSLT stylesheet to bring wiki markup back to Confluence.
+However, if you want to, you can paste the wiki markup from Wikifier into:</p>
+<ul>
+<li>Confluence 4, using the Insert &#9658; Wiki Markup option of the rich text editor</li>
+<li>Confluence 3, using the wiki markup editor view</li>
+</ul>
+<p>The XSLT stylesheet could be used as the "heart" of a plugin, although I have no immediate plan to do that.</p>
+<h3>Round-tripping?</h3>
+<p>Bear in mind the following comment from Paul Curren (Atlassian):</p>
+<blockquote>
+<p>Wiki markup can only represent a subset of what can be represented in XHTML.</p>
+</blockquote>
+<p>What Paul says is true. For example, if you paste Confluence XML table 
+markup (which is, in this specific case, XHTML markup) with merged cells
+ into Wikifier, the resulting wiki markup will retain the table cell 
+contents, but will not retain the merged cell formatting.</p>
+<p>Also from Paul, also true:</p>
+<blockquote>
+<p>just about anything is possible with appropriate development effort</p>
+</blockquote>
+<p>I can imagine that it might, perhaps, be possible to develop new 
+Confluence 3 macros to match new capabilities in Confluence 4, and have 
+an XSLT stylesheet transform such Confluence 4 syntax into these new 
+macros (or even, say, as the contents of the existing Confluence 3 HTML 
+macro). For me, though, this is a purely academic issue. I can now copy 
+content from Confluence to JIRA, which is what I was after.</p>
+<h2>Tips</h2>
+<h3>DTD, or XSD and DTD, but not just XSD</h3>
+<p>To validate Confluence page source, you need either:</p>
+<ul>
+<li>The DTD (confluence.dtd, and the xhtml1-*.ent files it depends on)</li>
+<li>The XSD (confluence.xsd, and the *.xsd files that it depends on) <em>and the DTD</em></li>
+</ul>
+<p>You cannot validate Confluence page source with only the XSD, because Confluence page source
+can contain references to character entities (for example, <code>&amp;mdash;</code>) that can only be
+defined in a DTD. If you attempt to validate Confluence page source that contains character
+entity references, but you do not refer to the DTD, you will get an XML parsing error.</p>
+<h2>Development notes</h2>
+<h3>Testing</h3>
+<p>The DTD/XSDs have been tested using the following Confluence page source:</p>
+<ul>
+<li>A handful of pages that I have created myself using the Confluence rich text editor
+(designed to exercise the full range of markup that the rich text editor can generate).</li>
+<li>A few hundred pages converted from Confluence 3 (with some editing in Confluence 4) on my local Confluence 4 sandbox installation.</li>
+<li>Over 4000 pages from a
+<a href="http://downloads.atlassian.com/software/confluence/downloads/documentation/Confluence%204.1%20Complete%20Documentation%20%28XML%29%20DOC-20120110.zip">Confluence Document export</a> provided by Atlassian.
+<p>A Confluence export consists of a .zip file containing a single <code>entities.xml</code> file, which contains page source inside <code>&lt;property name="body"&gt;</code> elements.</p>
+<p>I wrote a script to extract the contents of these elements into individual XML files, which I then validated using a Windows batch (.bat) file that calls xmllint, like this:</p>
+<pre>
+for %%f in ("*.xml") do "%_xmllint%" --noent --nowarning --noout --loaddtd --schema "%_schema%" "%%f" &gt;&gt; c:\temp\log.txt 2&gt;&amp;1
+</pre>
+<p>where:</p>
+<ul>
+<li>The current directory contains the .xml files to be validated</li>
+<li>The environment variable <code>_xmllint</code> contains the path of the xmllint executable</li>
+<li>The environment variable <code>_schema</code> contains the path of <code>confluence.xsd</code>
+(xmllint does not look for schemaLocation attributes)</li>
+<li>The .xml files contain the following DOCTYPE:
+<pre>
+&lt;!DOCTYPE ac:confluence SYSTEM "confluence.dtd"&gt;
+</pre>
+<p>for the <code>--loaddtd</code> option.</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Tip:</strong> The <code>&lt;property name="body"&gt;</code> elements in <code>entities.xml</code> wrap the page contents in a CDATA section.
+The page contents can also contain CDATA sections. However, nested CDATA sections are not allowed in XML, so, to avoid this issue,
+the <code>]]&gt;</code> terminators of the CDATA sections in the page contents contain a space (<code>]] &gt;</code>). When extracting the page contents
+into individual XML files, you need to remove these spaces.</p>
+<h3>Coined names and identifiers (not approved by Atlassian)</h3>
+<p>Highlighted items in the following listing are my own coinage, not approved by Atlassian:</p>
+<pre class="frame">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE <span class="highlight">ac:confluence</span> PUBLIC "<span class="highlight">-//Atlassian//Confluence 4 Page//EN</span>" "<span class="highlight">http://www.atlassian.com/schema/confluence/4/confluence.dtd</span>"&gt;
+&lt;<span class="highlight">ac:confluence</span>
+  xmlns:ac="<span class="highlight">http://www.atlassian.com/schema/confluence/4/ac/</span>"
+  xmlns:ri="<span class="highlight">http://www.atlassian.com/schema/confluence/4/ri/</span>"
+  xmlns="<span class="highlight">http://www.atlassian.com/schema/confluence/4/</span>"&gt;
+&lt;p&gt;Contents of page body&lt;/p&gt;
+&lt;/<span class="highlight">ac:confluence</span>&gt;
+</pre>
+<h4>Document root element name</h4>
+<p>Value: <code>ac:confluence</code></p>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>If Atlassian plans to publish multiple XML vocabularies for Confluence &mdash; perhaps blog posts might not have quite the same vocabulary? &mdash;
+then perhaps <code>ac:page</code> might be a better choice of name for this root element (more specific).</li>
+<li>I used the namespace prefix ac: (coined by Atlassian: I assume, perhaps incorrectly, that this is an abbreviation of "Atlassian Confluence") for the root element, to:
+<ul>
+<li>Avoid coining another namespace</li>
+<li>Avoid including the root element in the default namespace (that is, elements without a namespace prefix),
+because Atlassian has so far used that namespace for elements and attributes that use the same names as XHTML elements and attributes.</li>
+</ul>
+</li>
+</ul>
+<h4>Namespace names (URIs)</h4>
+<p>Values:</p>
+<pre>
+http://www.atlassian.com/schema/confluence/4/ac/
+http://www.atlassian.com/schema/confluence/4/ri/
+http://www.atlassian.com/schema/confluence/4/
+</pre>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>For the default namespace, I deliberately have not used the XHTML namespace name "http://www.w3.org/1999/xhtml".
+Elements and attributes in the Confluence storage format that have the same names as elements and attributes in XHTML do not necessarily have the same constraints
+(for example, the contexts in which elements and attributes can appear). To use the XHTML namespace for these elements and attributes would be, at best, misleading.</li>
+<li>A namespace name must match the format of a URI, but there need not be an actual resource at that URI.
+I have coined URIs based on my observations of current common practice.</li>
+<li>I have deliberately terminated the URIs with slashes.</li>
+<li>I'm least confident about my coinage for the URI of the default namespace; specifically, the way it ends in just ".../4/" (the Confluence version),
+compared to the other two namespace URIs, ".../4/ac/" and ".../4/ri/".
+I could not think of an appropriate choice of term to describe this default namespace. ".../4/xhtml/" felt wrong to me, for reasons already described,
+but it might be justifiable, as long as it is interpreted as "elements and attributes with the same names as XHTML elements and attributes", as opposed to "XHTML".</li>
+</ul>
+<h2>Known issues</h2>
+<h3>General</h3>
+<ul>
+<li>When using xmllint, you must specify the <code>--nowarning</code> option to suppress warnings about loading a schema that has already been loaded. Suggestions welcome.</li>
+</ul>
+<h3>Wikifier</h3>
+<ul>
+<li>In browsers except IE, Wikifier supports only a very limited set of 
+character entity references. I might fix this later, if there's demand.</li>
+<li>Wikifier shouldn't, but currently does, allow text directly under the "root" 
+level without an enclosing XML element. For example, Wikifier allows 
+"illegal text":<pre>
+&lt;p&gt;Text inside a paragraph element.&lt;/p&gt;
+illegal text
+</pre>
+</li>
+</ul>
+<div class="sidebar">
+<h2>To do</h2>
+<p>No promises, but here's what I have in mind:</p>
+<ul>
+<li>Refine the DTD/XSD constraints based on responses from Atlassian to the questions that I have asked on the
+<a href="http://confluence.atlassian.com/display/DOC/Confluence+Storage+Format">Confluence Storage Format</a> page</li>
+<li>Enhance the annotations in the schema</li>
+</ul>
+</div>
+<h2>Acknowledgements</h2>
+<p>I wish to thank the following people for their assistance and/or encouragement in developing this package:</p>
+<dl>
+<dt>Shannon Greywalker <span class="normal">(Confluence user)</span></dt>
+<dd>I only know Shannon through comments on the Confluence website. What Shannon writes is worth reading.</dd>
+<dt>Sarah Maddox <span class="normal">(Atlassian)</span></dt>
+<dd>Sarah pointed me to the exported Confluence Documentation that Atlassian makes available for download, and
+gave me tips on finding the page source inside. That source was a valuable bucket of test cases for developing the DTD/XSDs.</dd>
+<dt>Other Atlassians <span class="normal">(in particular, Paul Curren)</span></dt>
+<dd>Thank you for taking the time to respond to my comments openly, positively, and constructively. It's sincerely appreciated.</dd>
+</dl>
+<h2>Change log</h2>
+<p>Most recent changes first:</p>
+<table class="nowrap-first-column">
+<tr>
+<th>Date<br/><var>yyyy</var>-<var>mm</var>-<var>dd</var></th>
+<th>Description</th>
+</tr>
+<tr>
+<td>2024-09-26</td>
+<td>Stored these files in GitHub, published as a GitHub Pages site.</td>
+</tr>
+<tr>
+<td>2012-06-06</td>
+<td>Prettified this readme.</td>
+</tr>
+<tr>
+<td>2012-05-01</td>
+<td>
+<ul class="compact">
+<li>Added a license statement</li>
+<li>Added source files for Wikifier (in the wikifier subdirectory), which converts Confluence XML to wiki markup</li>
+<li>Added confluence-page-example-with-xslt-wiki.xml (open this in Firefox to see its Confluence XML converted to wiki markup)</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>2012-04-23</td>
+<td>
+<ul class="compact">
+<li>Corrected catalog-related tips in this readme</li>
+<li>Refined DTD comments after testing with the Eclipse XML editor</li>
+<li>Refined confluence2xhtml.xsl (improved table formatting)</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>2012-04-18</td>
+<td>
+<ul class="compact">
+<li>Added this readme</li>
+<li>Refined DTD after testing against Atlassian's own Confluence Documentation source</li>
+<li>Added XSD (constraints match DTD, as far as possible)</li>
+<li>Added catalog and related sample files</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>2012-04-13</td>
+<td>
+<ul class="compact">
+<li>Refined DTD after further experimentation to see what markup the rich text editor can create</li>
+<li>Added example Confluence page source file (containing a variety of markup; open this in your favorite validating XML editor), with a variant that refers to an XSLT stylesheet (below)</li>
+<li>Added "Confluence to XHTML" XSLT stylesheet (confluence2xhtml.xsl)</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>2012-04-12</td>
+<td>First draft of DTD.</td>
+</tr>
+</table>
+<h2>License</h2>
+<p>This package and its contents are distributed under the <a href="http://www.opensource.org/licenses/bsd-license.php">BSD 2-Clause license</a> (also known as the Simplified BSD license):</p>
+<div class="frame">
+<p>Copyright &copy; 2012, Fundi Software</p>
+<p>All rights reserved.</p>
+<p>Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:</p>
+<ul>
+<li>Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</li>
+</ul>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+</div>
+</body>
+</html>
